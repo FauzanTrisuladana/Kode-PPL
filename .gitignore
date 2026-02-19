@@ -1,0 +1,14 @@
+# Maven
+/target/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# IntelliJ
+.idea/
+*.iml
+
+# VS Code (keep settings tracked if you prefer)
+.vscode/*
+!.vscode/settings.json
