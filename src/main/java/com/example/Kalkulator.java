@@ -7,6 +7,9 @@ public class Kalkulator {
         this.a = a;
         this.b = b;
     }
+    public Kalkulator() {
+        
+    }
 
     public int tambah() {
         return a + b;
@@ -22,5 +25,9 @@ public class Kalkulator {
 
     public int bagi() {
         return a / b;
+    }
+
+    public boolean cekEven(int number) {
+        return number % 2 == 0;
     }
 }
