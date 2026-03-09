@@ -4,8 +4,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class WalletTest {
 
     Wallet wallet;
@@ -29,7 +33,7 @@ class WalletTest {
 
     @BeforeEach
     void BeforeEach() {
-        
+        wallet = new Wallet("Budi");
     }
 
     @AfterEach
@@ -38,6 +42,7 @@ class WalletTest {
     }
 
     @Test
+    @Order(1)
     void testInitialState() {
         assertAll(
                 () -> assertNotNull(wallet.getCards()),
@@ -54,6 +59,7 @@ class WalletTest {
     }
 
     @Test
+    @Order(2)
     void testAddAndGetCards() {
         List<String> cards = Arrays.asList("Kartu1", "Kartu2");
         wallet.addCards(cards);
@@ -78,6 +84,7 @@ class WalletTest {
     }
 
     @Test
+    @Order(3)
     void testWithdrawCards() {
         wallet.addCards(Arrays.asList("Kartu1", "Kartu2", "Kartu3"));
         wallet.withdrawCards(Arrays.asList("Kartu2"));
@@ -101,6 +108,7 @@ class WalletTest {
     }
 
     @Test
+    @Order(4)
     void testAddAndGetCash() {
         List<Double> cash = Arrays.asList(1000.0, 2000.0);
         wallet.addCash(cash);
@@ -127,6 +135,7 @@ class WalletTest {
     }
 
     @Test
+    @Order(5)
     void testWithdrawCash() {
         wallet.addCash(Arrays.asList(1000.0, 2000.0, 5000.0));
         wallet.withdrawCash(Arrays.asList(2000.0));
