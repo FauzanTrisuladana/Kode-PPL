@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Wallet {
-    private String owner;
+    private Owner owner;
     private final List<String> cards;
     private final List<Double> cash;
 
@@ -14,19 +14,19 @@ public class Wallet {
         this.cash = new ArrayList<>();
     }
 
-    public Wallet(String owner) {
+    public Wallet(Owner owner) {
         this();
         setOwner(owner);
     }
 
-    public void setOwner(String owner) {
+    public void setOwner(Owner owner) {
         if (owner == null) {
             throw new IllegalArgumentException("owner tidak boleh null");
         }
         this.owner = owner;
     }
 
-    public String getOwner() {
+    public Owner getOwner() {
         return owner;
     }
 
@@ -65,14 +65,14 @@ public class Wallet {
             throw new IllegalArgumentException("cash tidak boleh null");
         }
         for (Double amount : cash) {
-            if (amount == null) {
-                throw new IllegalArgumentException("amount tidak boleh null");
-            }
-            if (amount <= 0) {
-                throw new IllegalArgumentException("amount harus > 0");
-            }
+            validateCashAmount(amount);
         }
         this.cash.addAll(cash);
+    }
+
+    public void addCash(double amount) {
+        validateCashAmount(amount);
+        cash.add(amount);
     }
 
     public void withdrawCash(List<Double> cash) {
@@ -80,12 +80,20 @@ public class Wallet {
             throw new IllegalArgumentException("cash tidak boleh null");
         }
         for (Double amount : cash) {
-            if (amount == null) {
-                throw new IllegalArgumentException("amount tidak boleh null");
-            }
-            if (this.cash.contains(amount)) {
-                this.cash.remove(amount);
-            }
+            withdrawCash(requireAmount(amount));
+        }
+    }
+
+    public void withdrawCash(double amount) {
+        validateCashAmount(amount);
+        double remaining = getCashAmount() - amount;
+        if (remaining < 0) {
+            throw new InsufficientFundsException("saldo tidak cukup");
+        }
+
+        cash.clear();
+        if (remaining > 0) {
+            cash.add(remaining);
         }
     }
 
@@ -99,5 +107,24 @@ public class Wallet {
             total += amount;
         }
         return total;
+    }
+
+    private void validateCashAmount(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("amount harus > 0");
+        }
+    }
+
+    private double requireAmount(Double amount) {
+        if (amount == null) {
+            throw new IllegalArgumentException("amount tidak boleh null");
+        }
+        return amount;
+    }
+
+    public static class InsufficientFundsException extends RuntimeException {
+        public InsufficientFundsException(String message) {
+            super(message);
+        }
     }
 }

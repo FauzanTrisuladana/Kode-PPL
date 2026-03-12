@@ -12,4 +12,12 @@ public class Params {
             Arguments.of(100, 500, 600)
         );
     }
+
+    public static Stream<Arguments> provideOwners() {
+        return Stream.of(
+            Arguments.of(new Owner("OWN-001", "Budi", "budi@mail.com")),
+            Arguments.of(new Owner("OWN-002", "Siti", "siti@mail.com")),
+            Arguments.of(new Owner("OWN-003", "Andi", "andi@mail.com"))
+        );
+    }
 }
